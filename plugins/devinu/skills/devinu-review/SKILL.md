@@ -189,18 +189,19 @@ gh api $GH_HOSTNAME_ARGS --method PATCH "/repos/${GITHUB_REPOSITORY}/issues/comm
 {まとめコメント全文}"
 ```
 
-suggestion 付きの指摘がある場合、セクション 5.5 で構築した diff position マップを使いインラインコメントを投稿する。
+セクション 5.5 で構築した diff position マップを使い、diff position が存在する指摘をインラインコメントとして投稿する。
 
 #### インラインコメント投稿手順
 
-1. suggestion フィールドを持つ指摘を対象に、`file` + `line` から diff position を引く
-2. diff position が存在する指摘のみインラインコメントとして投稿する（position がない指摘は Sticky コメントのみに記載）
-3. 各指摘について以下を実行する:
+1. `file` + `line` から diff position を引く。diff position が存在する指摘のみインラインコメントの対象（position がない指摘は Sticky コメントのみに記載）
+2. suggestion フィールドの有無で body を分岐する:
+
+**suggestion あり:**
 
 ```bash
 gh api $GH_HOSTNAME_ARGS --method POST \
   /repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments \
-  -f body="**[{Severity}] {タイトル}**
+  -f body="{犬アイコン} **[{Severity}] {タイトル}** ({犬名})
 
 {説明}
 
@@ -212,7 +213,22 @@ gh api $GH_HOSTNAME_ARGS --method POST \
   -F position={diff_position}
 ```
 
-4. POST が **422 エラー**を返した場合、その指摘をフォールバックリストに移動する（スキップし次の指摘に進む）
+**suggestion なし:**
+
+```bash
+gh api $GH_HOSTNAME_ARGS --method POST \
+  /repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments \
+  -f body="{犬アイコン} **[{Severity}] {タイトル}** ({犬名})
+
+{説明}" \
+  -f commit_id="{HEAD_COMMIT_SHA}" \
+  -f path="{ファイルパス}" \
+  -F position={diff_position}
+```
+
+犬アイコンは各 agent に対応するもの（🍞 しょくぱん、🧹 もっぷ、🍬 わたあめ、🐄 べこ、🐾 わわち、🌭 ちくわ）を使う。
+
+3. POST が **422 エラー**を返した場合、その指摘をフォールバックリストに移動する（スキップし次の指摘に進む）
 
 #### フォールバック処理
 
@@ -239,7 +255,8 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 3. **Critical / High は折りたたまずトップに表示** — 見逃し防止
 4. **各セクションは `---` で区切る** — 視認性向上
 5. **良い点（Positive）も報告** — CodeRabbit 風に、良いコードへのフィードバックも含める
-6. **suggestion 付きの指摘は diff ブロックで提案コードを示す**
+6. **suggestion 付きの指摘は `diff` ブロックで提案コードを示す** — Sticky コメント内では `suggestion` ブロックではなく `diff` ブロックを使う（`suggestion` は GitHub のインラインコメント専用機能で、Sticky コメントでは「Apply suggestion」ボタンが動作しないため）
+7. **ファイル参照はリンク化する** — `` `{file}:{line}` `` を `[{file}:{line}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line})` のリンクにする。`GITHUB_SERVER_URL` 未設定時は `https://github.com` をデフォルトとする。ローカル実行時はリンク化不要
 
 ```markdown
 <!-- devinu-review-v1 -->
@@ -255,13 +272,14 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 > このセクションの指摘はマージ前に対応が必要です。
 
-- **[Critical]** {タイトル} — `{file}:{line}` ({犬名})
+- **[Critical]** {タイトル} — [{file}:{line}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}) ({犬名})
   {説明}
-  ```suggestion
-  {修正案がある場合のみ}
+  ```diff
+  - {変更前のコード}
+  + {修正案がある場合のみ}
   ```
 
-- **[High]** {タイトル} — `{file}:{line}` ({犬名})
+- **[High]** {タイトル} — [{file}:{line}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}) ({犬名})
   {説明}
 
 ※ Critical / High が 0 件の場合:
@@ -278,10 +296,11 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 #### `{file_path}`
 
-- **[{Severity}]** L{line}: {タイトル}
+- **[{Severity}]** L{line}: [{タイトル}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file_path}#L{line})
   {説明}
-  ```suggestion
-  {修正案がある場合}
+  ```diff
+  - {変更前のコード}
+  + {修正案がある場合}
   ```
 
 #### `{another_file_path}`
