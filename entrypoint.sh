@@ -10,9 +10,14 @@ set -euo pipefail
 # GitHub 認証
 echo "$GITHUB_TOKEN" | gh auth login --with-token
 
-# リポジトリ clone（shallow clone でサイズ節約）
-gh repo clone "$GITHUB_REPOSITORY" /workspace -- --depth=1
-cd /workspace
+# GitHub Actions の場合、リポジトリは /github/workspace にマウント済み
+# それ以外の場合は clone する
+if [ -d "/github/workspace/.git" ]; then
+  cd /github/workspace
+else
+  gh repo clone "$GITHUB_REPOSITORY" /workspace -- --depth=1
+  cd /workspace
+fi
 
 # DevInu レビュー実行
 exec claude -p "/devinu-review $PR_NUMBER" \
