@@ -98,7 +98,7 @@ Claude Code 内で以下を実行:
 
 ```
 /plugin marketplace add SphereStacking/DevInu
-/plugin install devinu@SphereStacking/DevInu
+/plugin install devinu@devinu-marketplace
 ```
 
 ### 使い方
