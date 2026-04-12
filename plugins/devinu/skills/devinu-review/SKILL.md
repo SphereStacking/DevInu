@@ -333,7 +333,7 @@ shields.io を使用する（以降 `$B` と略記）:
 <details>
 <summary>🧹 もっぷ (Security) — {N} 件（Critical: {n}, High: {n}, Medium: {n}, Low: {n}）</summary>
 
-| Severity | 場所 | 指摘 | 修正案 |
+| Severity | File | 指摘 | 修正案 |
 |----------|------|------|--------|
 | $B/high | [`{file}:{line}`]({link}) | {タイトル} | `{修正案の要約}` |
 | $B/medium | [`{file}:{line}`]({link}) | {タイトル} | — |
@@ -353,7 +353,7 @@ shields.io を使用する（以降 `$B` と略記）:
 #### テーブルの書式ルール
 
 - **Severity 列**: `$B` のバッジを使用（Closed になっても Severity は変更しない）。Closed / Won't Fix の指摘は指摘列に取り消し線（`~~`）を付け、Severity バッジの前に Status バッジを追加する
-- **場所 列**: `` `{file}:{line}` `` 形式でリンク化。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
+- **File 列**: `` `{file}:{line}` `` 形式でリンク化。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
 - **指摘 列**: タイトルのみ（簡潔に）。詳細説明は Critical/High カードに集約
 - **修正案 列**: suggestion がある場合はインラインコード（`` ` `` 囲み）で要点を記載。ない場合は `—`
 
