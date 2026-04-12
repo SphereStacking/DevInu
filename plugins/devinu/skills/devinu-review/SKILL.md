@@ -286,8 +286,8 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 | Status | Severity | 犬 | File | L | 指摘 | 修正案 |
 |--------|----------|-----|------|---|------|--------|
-| ![Open](https://img.shields.io/badge/Open-238636?style=flat-square) | ![Critical](https://img.shields.io/badge/Critical-d73a4a?style=flat-square) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| ![Closed](https://img.shields.io/badge/Closed-8957e5?style=flat-square) | ![High](https://img.shields.io/badge/High-e36209?style=flat-square) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+| ![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg) | ![Critical](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/critical.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
+| ![Closed](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/closed.svg) | ![High](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/high.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
 
 ※ 同じファイル・行を複数犬が指摘した場合は犬名をカンマ区切りで併記する
 
@@ -305,9 +305,9 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 | Status | Severity | File | L | 指摘 | 修正案 |
 |--------|----------|------|---|------|--------|
-| ![Open](https://img.shields.io/badge/Open-238636?style=flat-square) | ![High](https://img.shields.io/badge/High-e36209?style=flat-square) | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| ![Closed](https://img.shields.io/badge/Closed-8957e5?style=flat-square) | ![Medium](https://img.shields.io/badge/Medium-fbca04?style=flat-square) | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
-| ![Open](https://img.shields.io/badge/Open-238636?style=flat-square) | ![Low](https://img.shields.io/badge/Low-d4c5f9?style=flat-square) | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
+| ![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg) | ![High](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/high.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
+| ![Closed](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/closed.svg) | ![Medium](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/medium.svg) | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+| ![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg) | ![Low](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/low.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
 
 </details>
 
@@ -322,15 +322,15 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 #### テーブルの書式ルール
 
-- **Status 列**: shields.io バッジで表示する。Closed / Won't Fix の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 Open。Won't Fix は PR 作者がコメントで明示した場合、または再レビュー時に前回 Won't Fix だった指摘を引き継ぐ場合に使う
-  - Open: `![Open](https://img.shields.io/badge/Open-238636?style=flat-square)`
-  - Closed: `![Closed](https://img.shields.io/badge/Closed-8957e5?style=flat-square)`
-  - Won't Fix: `![Won't Fix](https://img.shields.io/badge/Won't_Fix-6e7781?style=flat-square)`
-- **Severity 列**: shields.io バッジで表示する（Closed になっても Severity は変更しない）
-  - Critical: `![Critical](https://img.shields.io/badge/Critical-d73a4a?style=flat-square)`
-  - High: `![High](https://img.shields.io/badge/High-e36209?style=flat-square)`
-  - Medium: `![Medium](https://img.shields.io/badge/Medium-fbca04?style=flat-square)`
-  - Low: `![Low](https://img.shields.io/badge/Low-d4c5f9?style=flat-square)`
+- **Status 列**: リポジトリ内の SVG バッジで表示する。Closed / Won't Fix の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 Open。Won't Fix は PR 作者がコメントで明示した場合、または再レビュー時に前回 Won't Fix だった指摘を引き継ぐ場合に使う。GHE 環境では `GITHUB_SERVER_URL` のホスト名に応じて raw URL を調整する（`https://{GHE_HOST}/raw/{GITHUB_REPOSITORY}/main/assets/badges/...`）
+  - Open: `![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg)`
+  - Closed: `![Closed](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/closed.svg)`
+  - Won't Fix: `![Won't Fix](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/wontfix.svg)`
+- **Severity 列**: リポジトリ内の SVG バッジで表示する（Closed になっても Severity は変更しない）
+  - Critical: `![Critical](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/critical.svg)`
+  - High: `![High](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/high.svg)`
+  - Medium: `![Medium](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/medium.svg)`
+  - Low: `![Low](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/low.svg)`
 - **File 列**: ファイル名のみ表示（パスが長い場合はファイル名だけ）。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
 - **L 列**: 行番号
 - **指摘 列**: タイトルと説明を `: ` 区切りで結合。長い場合は説明を 1〜2 文に要約する
