@@ -154,7 +154,7 @@ unified diff の position はファイルごとに 1 から始まるオフセッ
 
 1. セクション 3.5 で取得した既存 Sticky コメントの body から、前回の指摘一覧（file・line・タイトル）をパースする
 2. 今回の diff を確認し、前回指摘された行が変更されている（修正コミットが含まれる）場合、その指摘を「修正済み」としてマークする
-3. 修正済みの指摘は Severity アイコンを `🟢 Fixed` に変更してテーブルに残す（削除しない）
+3. 修正済みの指摘は Severity アイコンを `🟢 Closed` に変更してテーブルに残す（削除しない）
 
 初回レビュー時（既存 Sticky コメントがない場合）はこのセクションをスキップする。
 
@@ -286,7 +286,7 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 | Status | Severity | 犬 | File | L | 指摘 | 修正案 |
 |--------|----------|-----|------|---|------|--------|
 | 🔵 Open | 🔴 Critical | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| 🟢 Fixed | 🟠 High | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+| 🟢 Closed | 🟠 High | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
 
 ※ 同じファイル・行を複数犬が指摘した場合は犬名をカンマ区切りで併記する
 
@@ -305,7 +305,7 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 | Status | Severity | File | L | 指摘 | 修正案 |
 |--------|----------|------|---|------|--------|
 | 🔵 Open | 🟠 High | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| 🟢 Fixed | 🟡 Medium | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+| 🟢 Closed | 🟡 Medium | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
 | 🔵 Open | ⚪ Low | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
 
 </details>
@@ -321,8 +321,8 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 #### テーブルの書式ルール
 
-- **Status 列**: `🔵 Open`（未修正）または `🟢 Fixed`（修正済み）。Fixed の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 `🔵 Open`
-- **Severity 列**: `🔴` Critical, `🟠` High, `🟡` Medium, `⚪` Low のアイコンと文字を併記（Fixed になっても Severity は変更しない）
+- **Status 列**: `🔵 Open`（未修正）または `🟢 Closed`（修正済み）。Closed の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 `🔵 Open`
+- **Severity 列**: `🔴` Critical, `🟠` High, `🟡` Medium, `⚪` Low のアイコンと文字を併記（Closed になっても Severity は変更しない）
 - **File 列**: ファイル名のみ表示（パスが長い場合はファイル名だけ）。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
 - **L 列**: 行番号
 - **指摘 列**: タイトルと説明を `: ` 区切りで結合。長い場合は説明を 1〜2 文に要約する
