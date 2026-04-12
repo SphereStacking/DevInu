@@ -20,11 +20,17 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
 # Claude Code CLI インストール
 RUN npm install -g @anthropic-ai/claude-code
 
-# plugin を固定パスに配置（HOME に依存しない）
-COPY plugins/devinu/ /devinu-plugin/
+# 非 root ユーザー作成（Claude Code が root での bypassPermissions を拒否するため）
+RUN useradd -m -s /bin/bash devinu
+RUN mkdir -p /devinu-plugin /workspace && chown -R devinu:devinu /devinu-plugin /workspace
+
+# plugin を固定パスに配置
+COPY --chown=devinu:devinu plugins/devinu/ /devinu-plugin/
 
 # entrypoint
-COPY entrypoint.sh /entrypoint.sh
+COPY --chown=devinu:devinu entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+USER devinu
 
 ENTRYPOINT ["/entrypoint.sh"]
