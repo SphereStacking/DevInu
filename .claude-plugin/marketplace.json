@@ -1,0 +1,23 @@
+{
+  "name": "DevInu",
+  "owner": {
+    "name": "SphereStacking"
+  },
+  "metadata": {
+    "description": "まるくて太いエンジニアワンチャンチームが、あなたのコードを見守ります",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "devinu",
+      "source": "./devinu-plugin",
+      "description": "デブでまるい犬キャラクターのエンジニアチームが PR をレビューする",
+      "version": "0.1.0",
+      "author": {
+        "name": "SphereStacking"
+      },
+      "license": "MIT",
+      "keywords": ["pr-review", "code-review", "dog"]
+    }
+  ]
+}
