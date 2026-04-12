@@ -2,6 +2,25 @@ name: DevInu PR Review
 description: "デブでまるい犬キャラチームによる PR レビュー"
 author: SphereStacking
 
+inputs:
+  max_budget_usd:
+    description: "Claude Code 実行のコスト上限（USD）"
+    default: "5"
+  min_severity:
+    description: "レポートする最低 severity（critical/high/medium/low）"
+    default: "medium"
+  enable_ci_analysis:
+    description: "CI 失敗ログ分析を有効化するか（ちくわ起動）"
+    default: "false"
+  skip_labels:
+    description: "スキップするラベル（カンマ区切り）"
+    default: "skip-devinu"
+
 runs:
   using: docker
-  image: Dockerfile
+  image: docker://ghcr.io/spherestacking/devinu:latest
+  env:
+    MAX_BUDGET_USD: ${{ inputs.max_budget_usd }}
+    MIN_SEVERITY: ${{ inputs.min_severity }}
+    ENABLE_CI_ANALYSIS: ${{ inputs.enable_ci_analysis }}
+    SKIP_LABELS: ${{ inputs.skip_labels }}

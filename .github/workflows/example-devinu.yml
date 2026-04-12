@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  actions: read
 
 concurrency:
   group: devinu-${{ github.event.pull_request.number || github.event.issue.number }}
@@ -33,7 +34,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run DevInu
+        # action.yml が ghcr.io/spherestacking/devinu:latest を pull して実行する
+        # （このリポジトリ自体をテスト用に uses: ./ で参照）
         uses: ./
+        with:
+          max_budget_usd: "5"
+          # min_severity: "medium"        # critical/high/medium/low
+          # enable_ci_analysis: "true"     # CI 失敗ログをちくわが分析
+          # skip_labels: "skip-devinu"     # スキップするラベル（カンマ区切り）
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
