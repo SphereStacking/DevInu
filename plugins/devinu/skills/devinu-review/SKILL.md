@@ -152,9 +152,10 @@ unified diff の position はファイルごとに 1 から始まるオフセッ
 
 再レビュー時（既存の Sticky コメントが存在する場合）、前回の指摘が修正されたかを確認する。
 
-1. セクション 3.5 で取得した既存 Sticky コメントの body から、前回の指摘一覧（file・line・タイトル）をパースする
-2. 今回の diff を確認し、前回指摘された行が変更されている（修正コミットが含まれる）場合、その指摘を「修正済み」としてマークする
-3. 修正済みの指摘は Severity アイコンを `🟣 Closed` に変更してテーブルに残す（削除しない）
+1. セクション 3.5 で取得した既存 Sticky コメントの body から、前回の指摘一覧（file・line・タイトル・Status）をパースする
+2. 前回 `⚫ Won't Fix` だった指摘はそのまま `⚫ Won't Fix` を維持する
+3. 今回の diff を確認し、前回指摘された行が変更されている（修正コミットが含まれる）場合、その指摘を `🟣 Closed` に更新する
+4. 前回 `🟣 Closed` だった指摘はそのまま `🟣 Closed` を維持する（再度 Open にしない）
 
 初回レビュー時（既存 Sticky コメントがない場合）はこのセクションをスキップする。
 
@@ -321,7 +322,7 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 #### テーブルの書式ルール
 
-- **Status 列**: `🟢 Open`（未修正）または `🟣 Closed`（修正済み）。Closed の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 `🟢 Open`
+- **Status 列**: `🟢 Open`（未対応）、`🟣 Closed`（修正済み）、`⚫ Won't Fix`（対応しない）。Closed / Won't Fix の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 `🟢 Open`。`⚫ Won't Fix` は PR 作者がコメントで明示した場合、または再レビュー時に前回 Won't Fix だった指摘を引き継ぐ場合に使う
 - **Severity 列**: `🔴` Critical, `🟠` High, `🟡` Medium, `⚪` Low のアイコンと文字を併記（Closed になっても Severity は変更しない）
 - **File 列**: ファイル名のみ表示（パスが長い場合はファイル名だけ）。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
 - **L 列**: 行番号
