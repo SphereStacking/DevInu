@@ -20,8 +20,8 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
 # Claude Code CLI インストール
 RUN npm install -g @anthropic-ai/claude-code
 
-# plugin を自動検出パスに配置
-COPY plugins/devinu/ /root/.claude/plugins/devinu/
+# plugin を固定パスに配置（HOME に依存しない）
+COPY plugins/devinu/ /devinu-plugin/
 
 # entrypoint
 COPY entrypoint.sh /entrypoint.sh

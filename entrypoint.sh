@@ -8,26 +8,20 @@ set -euo pipefail
 : "${PR_NUMBER:?PR_NUMBER is required}"
 
 # GitHub 認証
-echo "$GITHUB_TOKEN" | gh auth login --with-token
+echo "$GITHUB_TOKEN" | gh auth login --with-token 2>&1
 
 # GitHub Actions の場合、リポジトリは /github/workspace にマウント済み
 # それ以外の場合は clone する
 if [ -d "/github/workspace/.git" ]; then
-  echo "Using mounted workspace at /github/workspace"
   cd /github/workspace
 else
-  echo "Cloning repository..."
   gh repo clone "$GITHUB_REPOSITORY" /workspace -- --depth=1
   cd /workspace
 fi
 
-echo "Current directory: $(pwd)"
-echo "Git status: $(git log --oneline -1 2>&1 || echo 'not a git repo')"
-echo "Plugin check: $(ls /root/.claude/plugins/devinu/.claude-plugin/plugin.json 2>&1 || echo 'plugin not found')"
-echo "Starting claude..."
-
 # DevInu レビュー実行
 exec claude -p "/devinu-review $PR_NUMBER" \
+  --plugin-dir /devinu-plugin \
   --permission-mode bypassPermissions \
   --output-format text \
   --max-budget-usd "${MAX_BUDGET_USD:-5}"
