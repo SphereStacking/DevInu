@@ -273,15 +273,12 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 > このセクションの指摘はマージ前に対応が必要です。
 
-- **[Critical]** {タイトル} — [{file}:{line}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}) ({犬名})
-  {説明}
-  ```diff
-  - {変更前のコード}
-  + {修正案がある場合のみ}
-  ```
+| Severity | 犬 | File | L | 指摘 | 修正案 |
+|----------|-----|------|---|------|--------|
+| 🔴 Critical | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
+| 🟠 High | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
 
-- **[High]** {タイトル} — [{file}:{line}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}) ({犬名})
-  {説明}
+※ 同じファイル・行を複数犬が指摘した場合は犬名をカンマ区切りで併記する
 
 ※ Critical / High が 0 件の場合:
 > ✅ Critical / High の指摘はありません。
@@ -290,35 +287,35 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 ### 📋 詳細レビュー
 
-<!-- 指摘がある犬のみ details で表示。ファイルごとにグルーピング -->
+<!-- 指摘がある犬のみ details で表示。テーブル形式で一覧性を高める -->
 
 <details>
-<summary>🧹 もっぷ (Security) — {N} 件（Critical: {n}, High: {n}, Medium: {n}）</summary>
+<summary>🧹 もっぷ (Security) — {N} 件（Critical: {n}, High: {n}, Medium: {n}, Low: {n}）</summary>
 
-#### `{file_path}`
-
-- **[{Severity}]** L{line}: [{タイトル}]({GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file_path}#L{line})
-  {説明}
-  ```diff
-  - {変更前のコード}
-  + {修正案がある場合}
-  ```
-
-#### `{another_file_path}`
-
-- **[{Severity}]** L{line}: {タイトル}
-  {説明}
+| Severity | File | L | 指摘 | 修正案 |
+|----------|------|---|------|--------|
+| 🔴 High | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
+| 🟡 Medium | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
+| ⚪ Low | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
 
 </details>
 
 <details>
-<summary>🍬 わたあめ (Performance) — {N} 件（High: {n}, Medium: {n}）</summary>
+<summary>🍬 わたあめ (Performance) — {N} 件（High: {n}, Medium: {n}, Low: {n}）</summary>
 
-（同様の構造）
+（同様のテーブル構造）
 
 </details>
 
 <!-- 他の犬も指摘がある場合のみ同様に表示 -->
+
+#### テーブルの書式ルール
+
+- **Severity 列**: `🔴` Critical, `🟠` High, `🟡` Medium, `⚪` Low のアイコンと文字を併記
+- **File 列**: ファイル名のみ表示（パスが長い場合はファイル名だけ）。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
+- **L 列**: 行番号
+- **指摘 列**: タイトルと説明を `: ` 区切りで結合。長い場合は説明を 1〜2 文に要約する
+- **修正案 列**: suggestion がある場合はインラインコード（`` ` `` 囲み）で修正の要点を簡潔に記載。ない場合は `—`
 
 ---
 
