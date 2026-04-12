@@ -8,7 +8,9 @@ set -euo pipefail
 : "${PR_NUMBER:?PR_NUMBER is required}"
 
 # GitHub 認証
-echo "$GITHUB_TOKEN" | gh auth login --with-token 2>&1
+# GITHUB_TOKEN 環境変数が設定されている場合、gh CLI は自動で認証するため
+# gh auth login は不要。gh auth status で確認のみ行う。
+gh auth status 2>&1 || true
 
 # GitHub Actions の場合、リポジトリは /github/workspace にマウント済み
 # それ以外の場合は clone する
