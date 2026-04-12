@@ -300,12 +300,26 @@ shields.io を使用する（以降 `$B` と略記）:
 
 > このセクションの指摘はマージ前に対応が必要です。
 
-| Status | Severity | 犬 | File | L | 指摘 | 修正案 |
-|--------|----------|-----|------|---|------|--------|
-| ![Open]($B/open.svg) | ![Critical]($B/critical.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| ![Closed]($B/closed.svg) | ![High]($B/high.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+各指摘をカード（blockquote）形式で表示する:
 
-※ 同じファイル・行を複数犬が指摘した場合は犬名をカンマ区切りで併記する
+> $B/status $B/severity **{タイトル}** — [`{file}:{line}`]({link}) {犬アイコン列}
+> {説明}
+> ```diff
+> - {変更前}
+> + {修正案}
+> ```
+
+例:
+> ![Open]($B/open.svg) ![High]($B/high.svg) **Hardcoded secret が git 履歴に残る** — [`test-e2e.md:18`]({link}) 🧹🐄🐾
+> `password` 変数にダミー値でも git 履歴に永続的に残り、Secret Scanning が誤検知を起こす。
+> ```diff
+> - const password = "hardcoded_secret_123";
+> + const password = "REDACTED";
+> ```
+
+- 犬名はアイコンのみ並べる（ホバーで名前が分かる必要はない。統計テーブルで対応表がある）
+- Closed / Won't Fix の場合はタイトルに取り消し線を付け、Status バッジを変更する
+- suggestion がない指摘は `diff` ブロックを省略する
 
 ※ Critical / High が 0 件の場合:
 > ✅ Critical / High の指摘はありません。
@@ -314,16 +328,16 @@ shields.io を使用する（以降 `$B` と略記）:
 
 ### 📋 詳細レビュー
 
-<!-- 指摘がある犬のみ details で表示。テーブル形式で一覧性を高める -->
+<!-- 指摘がある犬のみ details で表示。コンパクト4列テーブル -->
 
 <details>
 <summary>🧹 もっぷ (Security) — {N} 件（Critical: {n}, High: {n}, Medium: {n}, Low: {n}）</summary>
 
-| Status | Severity | File | L | 指摘 | 修正案 |
-|--------|----------|------|---|------|--------|
-| ![Open]($B/open.svg) | ![High]($B/high.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| ![Closed]($B/closed.svg) | ![Medium]($B/medium.svg) | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
-| ![Open]($B/open.svg) | ![Low]($B/low.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
+| Severity | 場所 | 指摘 | 修正案 |
+|----------|------|------|--------|
+| $B/high | [`{file}:{line}`]({link}) | {タイトル} | `{修正案の要約}` |
+| $B/medium | [`{file}:{line}`]({link}) | {タイトル} | — |
+| $B/low | [`{file}:{line}`]({link}) | {タイトル} | — |
 
 </details>
 
@@ -338,12 +352,10 @@ shields.io を使用する（以降 `$B` と略記）:
 
 #### テーブルの書式ルール
 
-- **Status 列**: `$B` のバッジを使用（上記「バッジ URL」セクション参照）。Closed / Won't Fix の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 Open。Won't Fix は PR 作者がコメントで明示した場合、または再レビュー時に前回 Won't Fix だった指摘を引き継ぐ場合に使う
-- **Severity 列**: `$B` のバッジを使用（Closed になっても Severity は変更しない）
-- **File 列**: ファイル名のみ表示（パスが長い場合はファイル名だけ）。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
-- **L 列**: 行番号
-- **指摘 列**: タイトルと説明を `: ` 区切りで結合。長い場合は説明を 1〜2 文に要約する
-- **修正案 列**: suggestion がある場合はインラインコード（`` ` `` 囲み）で修正の要点を簡潔に記載。ない場合は `—`
+- **Severity 列**: `$B` のバッジを使用（Closed になっても Severity は変更しない）。Closed / Won't Fix の指摘は指摘列に取り消し線（`~~`）を付け、Severity バッジの前に Status バッジを追加する
+- **場所 列**: `` `{file}:{line}` `` 形式でリンク化。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
+- **指摘 列**: タイトルのみ（簡潔に）。詳細説明は Critical/High カードに集約
+- **修正案 列**: suggestion がある場合はインラインコード（`` ` `` 囲み）で要点を記載。ない場合は `—`
 
 ---
 
