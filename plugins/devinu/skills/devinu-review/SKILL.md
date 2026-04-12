@@ -262,17 +262,17 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 ### バッジ URL
 
-shields.io の `flat-square` スタイルを使用する（以降 `$B` と略記）:
+shields.io を使用する（以降 `$B` と略記）:
 
 | 用途 | 記法 |
 |------|------|
-| Status: Open | `![Open](https://img.shields.io/badge/Open-238636?style=flat-square)` |
-| Status: Closed | `![Closed](https://img.shields.io/badge/Closed-8957e5?style=flat-square)` |
-| Status: Won't Fix | `![Won't Fix](https://img.shields.io/badge/Won't_Fix-6e7781?style=flat-square)` |
-| Severity: Critical | `![Critical](https://img.shields.io/badge/Critical-d73a4a?style=flat-square)` |
-| Severity: High | `![High](https://img.shields.io/badge/High-e36209?style=flat-square)` |
-| Severity: Medium | `![Medium](https://img.shields.io/badge/Medium-fbca04?style=flat-square)` |
-| Severity: Low | `![Low](https://img.shields.io/badge/Low-d4c5f9?style=flat-square)` |
+| Status: Open | `![Open](https://img.shields.io/badge/Open-238636)` |
+| Status: Closed | `![Closed](https://img.shields.io/badge/Closed-8957e5)` |
+| Status: Won't Fix | `![Won't Fix](https://img.shields.io/badge/Won't_Fix-6e7781)` |
+| Severity: Critical | `![Critical](https://img.shields.io/badge/Critical-d73a4a)` |
+| Severity: High | `![High](https://img.shields.io/badge/High-e36209)` |
+| Severity: Medium | `![Medium](https://img.shields.io/badge/Medium-fbca04)` |
+| Severity: Low | `![Low](https://img.shields.io/badge/Low-d4c5f9)` |
 
 テンプレート内の `$B/{name}` は上記テーブルの対応する完全な URL に展開して使う。
 
