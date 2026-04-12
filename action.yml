@@ -1,0 +1,13 @@
+name: DevInu PR Review
+description: "デブでまるい犬キャラチームによる PR レビュー"
+author: SphereStacking
+
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+    ANTHROPIC_API_KEY: ${{ env.ANTHROPIC_API_KEY }}
+    GITHUB_REPOSITORY: ${{ env.GITHUB_REPOSITORY }}
+    PR_NUMBER: ${{ env.PR_NUMBER }}
+    MAX_BUDGET_USD: ${{ env.MAX_BUDGET_USD }}

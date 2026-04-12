@@ -1,0 +1,8 @@
+.env
+*.pem
+.git/
+.github/
+node_modules/
+README.md
+.gitignore
+.dockerignore
