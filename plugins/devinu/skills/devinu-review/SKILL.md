@@ -69,7 +69,7 @@ pr-review-toolkit plugin が利用可能な場合、追加で以下の agent も
 
 1. 同じファイル・同じ行を指している指摘は 1 つにまとめる（重複排除）
 2. severity に基づいて並べ替える（Critical → High → Medium → Low）
-3. Low severity の指摘は除外する（デフォルト）
+3. Low severity の指摘は基本的に除外するが、修正が必要だと判断した場合は残す（おやかたの裁量）
 4. 犬キャラごとのセクションを維持しつつ重複を排除する
 
 ### 7. 出力
