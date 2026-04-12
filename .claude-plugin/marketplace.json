@@ -1,5 +1,5 @@
 {
-  "name": "devinu-marketplace",
+  "name": "devinu",
   "owner": {
     "name": "SphereStacking"
   },
@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "devinu",
-      "source": "./devinu-plugin",
+      "source": "./plugins/devinu",
       "description": "デブでまるい犬キャラクターのエンジニアチームが PR をレビューする",
       "version": "0.1.0",
       "author": {

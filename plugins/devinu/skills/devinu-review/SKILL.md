@@ -45,13 +45,15 @@ gh pr view $PR_NUMBER --json files --jq '.files[].path'
 
 ### 4. 犬 agent 並列起動
 
-Agent ツールを使って以下の 3 エージェントを**並列で**起動する。各 agent には PR タイトル・説明・diff 全文・変更ファイル一覧を渡す。
+Agent ツールを使って以下の 5 エージェントを**並列で**起動する。各 agent には PR タイトル・説明・diff 全文・変更ファイル一覧を渡す。
 
 - `devinu:shokupan` — Frontend レビュー
 - `devinu:moppu` — Security レビュー
 - `devinu:wataame` — Performance レビュー
+- `devinu:beko` — Test Quality レビュー
+- `devinu:wawachi` — Docs / Types レビュー
 
-**重要:** 3 つの Agent ツール呼び出しを 1 つのメッセージ内で同時に行うことで並列実行する。
+**重要:** 5 つの Agent ツール呼び出しを 1 つのメッセージ内で同時に行うことで並列実行する。
 
 ### 5. pr-review-toolkit 起動（任意）
 
@@ -124,6 +126,20 @@ gh pr review $PR_NUMBER --comment --body "レビュー本文"
 
 <details>
 <summary>🍬 わたあめ (Performance) — {N} 件</summary>
+
+（同様のテーブル）
+
+</details>
+
+<details>
+<summary>🐄 ベコ (Test Quality) — {N} 件</summary>
+
+（同様のテーブル）
+
+</details>
+
+<details>
+<summary>🐾 わわち (Docs / Types) — {N} 件</summary>
 
 （同様のテーブル）
 
