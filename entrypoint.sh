@@ -16,7 +16,6 @@ cd /workspace
 
 # DevInu レビュー実行
 exec claude -p "/devinu-review $PR_NUMBER" \
-  --plugin-dir /devinu-plugin \
   --permission-mode bypassPermissions \
   --output-format text \
   --max-budget-usd "${MAX_BUDGET_USD:-5}"
