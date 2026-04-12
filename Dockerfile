@@ -27,6 +27,12 @@ RUN mkdir -p /devinu-plugin /workspace && chown -R devinu:devinu /devinu-plugin 
 # plugin を固定パスに配置
 COPY --chown=devinu:devinu plugins/devinu/ /devinu-plugin/
 
+# pr-review-toolkit プラグインを公式リポジトリから取得
+RUN git clone --depth=1 https://github.com/anthropics/claude-plugins-official.git /tmp/claude-plugins-official \
+    && cp -r /tmp/claude-plugins-official/plugins/pr-review-toolkit /pr-review-toolkit-plugin \
+    && rm -rf /tmp/claude-plugins-official \
+    && chown -R devinu:devinu /pr-review-toolkit-plugin
+
 # entrypoint
 COPY --chown=devinu:devinu entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
