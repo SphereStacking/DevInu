@@ -260,6 +260,28 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 以下の Markdown テンプレートに従って出力を構成する。先頭に必ず `<!-- devinu-review-v1 -->` を付与すること。
 
+### バッジ URL
+
+バッジ画像の URL ベースパス（以降 `$B` と略記）:
+
+```
+https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges
+```
+
+GHE 環境では `https://{GHE_HOST}/raw/{GITHUB_REPOSITORY}/main/assets/badges` に読み替える。
+
+| 用途 | 記法 |
+|------|------|
+| Status: Open | `![Open]($B/open.svg)` |
+| Status: Closed | `![Closed]($B/closed.svg)` |
+| Status: Won't Fix | `![Won't Fix]($B/wontfix.svg)` |
+| Severity: Critical | `![Critical]($B/critical.svg)` |
+| Severity: High | `![High]($B/high.svg)` |
+| Severity: Medium | `![Medium]($B/medium.svg)` |
+| Severity: Low | `![Low]($B/low.svg)` |
+
+実際の出力では `$B` を展開した完全な URL を使う。
+
 ### フォーマットルール
 
 1. **指摘が 0 件の犬はトグルにしない** — フッターの統計行にまとめて「✅ 指摘なし」と表示
@@ -286,8 +308,8 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 | Status | Severity | 犬 | File | L | 指摘 | 修正案 |
 |--------|----------|-----|------|---|------|--------|
-| ![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg) | ![Critical](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/critical.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| ![Closed](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/closed.svg) | ![High](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/high.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+| ![Open]($B/open.svg) | ![Critical]($B/critical.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
+| ![Closed]($B/closed.svg) | ![High]($B/high.svg) | {犬アイコン} {犬名} | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
 
 ※ 同じファイル・行を複数犬が指摘した場合は犬名をカンマ区切りで併記する
 
@@ -305,9 +327,9 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 | Status | Severity | File | L | 指摘 | 修正案 |
 |--------|----------|------|---|------|--------|
-| ![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg) | ![High](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/high.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
-| ![Closed](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/closed.svg) | ![Medium](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/medium.svg) | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
-| ![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg) | ![Low](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/low.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
+| ![Open]($B/open.svg) | ![High]($B/high.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | `{修正案の要約}` |
+| ![Closed]($B/closed.svg) | ![Medium]($B/medium.svg) | [{file}]({link}) | {line} | ~~{タイトル}: {説明}~~ | — |
+| ![Open]($B/open.svg) | ![Low]($B/low.svg) | [{file}]({link}) | {line} | {タイトル}: {説明} | — |
 
 </details>
 
@@ -322,15 +344,8 @@ gh api $GH_HOSTNAME_ARGS --method POST \
 
 #### テーブルの書式ルール
 
-- **Status 列**: リポジトリ内の SVG バッジで表示する。Closed / Won't Fix の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 Open。Won't Fix は PR 作者がコメントで明示した場合、または再レビュー時に前回 Won't Fix だった指摘を引き継ぐ場合に使う。GHE 環境では `GITHUB_SERVER_URL` のホスト名に応じて raw URL を調整する（`https://{GHE_HOST}/raw/{GITHUB_REPOSITORY}/main/assets/badges/...`）
-  - Open: `![Open](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/open.svg)`
-  - Closed: `![Closed](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/closed.svg)`
-  - Won't Fix: `![Won't Fix](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/wontfix.svg)`
-- **Severity 列**: リポジトリ内の SVG バッジで表示する（Closed になっても Severity は変更しない）
-  - Critical: `![Critical](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/critical.svg)`
-  - High: `![High](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/high.svg)`
-  - Medium: `![Medium](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/medium.svg)`
-  - Low: `![Low](https://raw.githubusercontent.com/SphereStacking/DevInu/main/assets/badges/low.svg)`
+- **Status 列**: `$B` のバッジを使用（上記「バッジ URL」セクション参照）。Closed / Won't Fix の場合、指摘列のテキストに取り消し線（`~~`）を付ける。初回レビュー時は全件 Open。Won't Fix は PR 作者がコメントで明示した場合、または再レビュー時に前回 Won't Fix だった指摘を引き継ぐ場合に使う
+- **Severity 列**: `$B` のバッジを使用（Closed になっても Severity は変更しない）
 - **File 列**: ファイル名のみ表示（パスが長い場合はファイル名だけ）。リンク先は `{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/blob/{HEAD_COMMIT_SHA}/{file}#L{line}`
 - **L 列**: 行番号
 - **指摘 列**: タイトルと説明を `: ` 区切りで結合。長い場合は説明を 1〜2 文に要約する
