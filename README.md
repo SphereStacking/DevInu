@@ -1,112 +1,106 @@
-# DevInu 🐕
+# 🏚️ Chollows
 
-デブでまるい犬キャラクターのエンジニアチームが、あなたの PR をレビューします。
+墓場に棲むお化け動物たちが、あなたの PR をレビューします。
 
-Docker コンテナ内の Claude Code CLI を使い、コードベース全体を読んだうえで多角的な PR レビューを提供する GitHub Actions ツールです。
+Docker コンテナ内の Claude Code CLI を使い、6匹の専門エージェントが多角的な PR レビューを提供する GitHub Actions ツールです。
 
-## クイックスタート
+## Meet the Chollows
 
-1. リポジトリの Settings → Secrets and variables → Actions で以下を設定:
+| 絵文字 | 名前 | 元動物 | 担当 |
+|--------|------|--------|------|
+| 🐕 | しょくぱん | コーギー | Frontend — React/Vue/CSS/アクセシビリティ |
+| 🦫 | だむお | ビーバー | Architecture — 設計/可読性/命名/DRY |
+| 🐹 | わたあめ | チンチラ | Docs/Types — 型定義/ドキュメント/API契約 |
+| 🐦 | おもち | シマエナガ | Performance — N+1/メモリリーク/計算量 |
+| 🦔 | とげとげ | ハリネズミ | Security — 脆弱性/secrets/認証 |
+| 🐙 | パンケーキ | メンダコ | Test Quality — カバレッジ/テスト妥当性 |
+
+全員下半身が幽霊尻尾のお化け動物。
+
+## Quick Start
+
+1. リポジトリの Settings → Secrets and variables → Actions で設定:
    - `ANTHROPIC_API_KEY`: Anthropic の API キー
 
-2. `.github/workflows/devinu.yml` を作成:
+2. `.github/workflows/chollows.yml` を作成:
 
 ```yaml
-name: DevInu PR Review
+name: Chollows PR Review
 
 on:
   pull_request:
-    types: [opened]
-  issue_comment:
-    types: [created]
+    types: [opened, synchronize]
 
 permissions:
   contents: read
   pull-requests: write
 
 concurrency:
-  group: devinu-${{ github.event.pull_request.number || github.event.issue.number }}
+  group: chollows-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  devinu-review:
+  chollows-review:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: |
-      github.event_name == 'pull_request' ||
-      (
-        github.event_name == 'issue_comment' &&
-        github.event.issue.pull_request != null &&
-        contains(github.event.comment.body, '@devinu rereview') &&
-        github.event.comment.user.login != 'github-actions[bot]'
-      )
     steps:
-      - name: Run DevInu
-        uses: SphereStacking/DevInu@v0.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+      - name: Run Chollows
+        uses: SphereStacking/Chollows@latest
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
-3. PR を作成すると、DevInu チームが自動でレビューします！
+3. PR を作成すると、Chollows チームが自動でレビューします！
 
-## 犬キャラクター
+## Configuration
 
-| 絵文字 | 名前 | 犬種 | 役割 |
-|--------|------|------|------|
-| 🏠 | おやかた | ブルドッグ | リーダー。チームをまとめ、レビュー結果を統合する |
-| 🍞 | しょくぱん | コーギー | Frontend（React/Vue/CSS/アクセシビリティ） |
-| 🧹 | もっぷ | プーリー | Security（認証・脆弱性・secrets 検出） |
-| 🍬 | わたあめ | サモエド | Performance（N+1クエリ・メモリリーク・計算量） |
-| 🐄 | ベコ | ダルメシアン | Test Quality（カバレッジ・テスト妥当性） |
-| 🐾 | わわち | チワワ | Docs / Types（型定義・ドキュメント） |
+| パラメータ | 必須 | デフォルト | 説明 |
+|-----------|------|-----------|------|
+| anthropic_api_key | ✅ | — | Anthropic API キー |
+| min_severity | ❌ | medium | 表示する最低 severity（critical/high/medium/low） |
+| max_budget_usd | ❌ | 5 | API コスト上限（USD） |
+| language | ❌ | ja | レビュー言語 |
+| disabled_agents | ❌ | — | 無効化する agent ID（カンマ区切り: shokupan,damuo,wataame,omochi,togetoge,pancake） |
+| skip_labels | ❌ | skip-chollows | スキップ用ラベル（カンマ区切り） |
 
-全員デブでまるい。
+## Customization
 
-## 設定
+### .chollows/ ディレクトリ
+対象リポジトリに `.chollows/` ディレクトリを配置してカスタマイズ:
 
-DevInu はゼロコンフィグで動作します。追加設定は不要です。
+#### rules.md
+`.chollows/rules.md` にプロジェクト固有のレビュールールを記述。全エージェントがルール違反を最優先で検出します。
 
-プロジェクト固有のルールがある場合は、リポジトリのルートに `CLAUDE.md` を配置してください。Claude Code が自動で読み込み、レビュー時に考慮します。
+例:
+```markdown
+- console.log は本番コードに残さないこと
+- API エンドポイントは必ず認証ミドルウェアを通すこと
+```
 
-## トリガー
+#### カスタムスキル
+`.chollows/skills/` にカスタムスキルを配置して追加機能を実装できます。
+
+## Triggers
 
 | イベント | 説明 |
 |---------|------|
-| PR 作成 | `pull_request: opened` で自動発火 |
-| 再レビュー | PR コメントに `@devinu rereview` と書くと再実行 |
+| PR 作成・更新 | `pull_request: opened, synchronize` で自動発火 |
+| 再レビュー | PR コメントに `@chollows rereview` と書くと再実行 |
+| 指示付き再レビュー | `@chollows rereview セキュリティ重点的に見て` のように追加指示を渡せる |
 
-## スキップ
+## Skip
 
 | 方法 | 説明 |
 |------|------|
-| Draft PR | CI では自動スキップ（ローカル実行ではスキップしない） |
-| ラベル | PR に `skip-devinu` ラベルを付けるとスキップ |
-
-## 環境変数
-
-| 変数 | 必須 | 説明 |
-|------|------|------|
-| `ANTHROPIC_API_KEY` | ✅ | Anthropic API キー |
-| `GITHUB_TOKEN` | ✅ | GitHub Actions が自動発行 |
-| `MAX_BUDGET_USD` | ❌ | Claude Code のコスト上限（デフォルト: $5） |
+| Draft PR | CI では自動スキップ |
+| ラベル | `skip-chollows` ラベルでスキップ |
 
 ## ローカル利用
 
-### インストール
-
-Claude Code 内で以下を実行:
-
-```
-/plugin marketplace add SphereStacking/DevInu
-/plugin install devinu@devinu-marketplace
-```
-
-### 使い方
+Claude Code プラグインとしてローカルでも利用可能:
 
 ```bash
-claude "/devinu-review 123"
+claude "/chollows-review 123"
 ```
 
 ※ `gh` CLI が認証済みである必要があります。

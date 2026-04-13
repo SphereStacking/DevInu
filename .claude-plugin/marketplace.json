@@ -1,23 +1,23 @@
 {
-  "name": "devinu",
+  "name": "chollows",
   "owner": {
     "name": "SphereStacking"
   },
   "metadata": {
-    "description": "まるくて太いエンジニアワンチャンチームが、あなたのコードを見守ります",
-    "version": "0.1.0"
+    "description": "墓場に棲むお化け動物たちが、あなたのコードを見守ります",
+    "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "devinu",
-      "source": "./plugins/devinu",
-      "description": "デブでまるい犬キャラクターのエンジニアチームが PR をレビューする",
-      "version": "0.1.0",
+      "name": "chollows",
+      "source": "./plugins/chollows",
+      "description": "墓場に棲むお化け動物キャラクターのエンジニアチームが PR をレビューする",
+      "version": "1.0.0",
       "author": {
         "name": "SphereStacking"
       },
       "license": "MIT",
-      "keywords": ["pr-review", "code-review", "dog"]
+      "keywords": ["pr-review", "code-review", "ghost-animals", "chollows"]
     }
   ]
 }

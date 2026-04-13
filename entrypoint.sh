@@ -21,12 +21,16 @@ export GH_HOSTNAME_ARGS
 # inputs 環境変数のデフォルト値設定
 MAX_BUDGET_USD="${MAX_BUDGET_USD:-5}"
 MIN_SEVERITY="${MIN_SEVERITY:-medium}"
-ENABLE_CI_ANALYSIS="${ENABLE_CI_ANALYSIS:-false}"
-SKIP_LABELS="${SKIP_LABELS:-skip-devinu}"
+SKIP_LABELS="${SKIP_LABELS:-skip-chollows}"
+DISABLED_AGENTS="${DISABLED_AGENTS:-}"
+LANGUAGE="${LANGUAGE:-ja}"
+REVIEW_INSTRUCTIONS="${REVIEW_INSTRUCTIONS:-}"
 export MAX_BUDGET_USD
 export MIN_SEVERITY
-export ENABLE_CI_ANALYSIS
 export SKIP_LABELS
+export DISABLED_AGENTS
+export LANGUAGE
+export REVIEW_INSTRUCTIONS
 
 # GitHub 認証
 # GITHUB_TOKEN 環境変数が設定されている場合、gh CLI は自動で認証するため
@@ -42,10 +46,16 @@ else
   cd /workspace
 fi
 
-# DevInu レビュー実行
-exec claude -p "/devinu-review $PR_NUMBER" \
-  --plugin-dir /devinu-plugin \
-  --plugin-dir /pr-review-toolkit-plugin \
+# リポジトリ内 .chollows/ カスタムプラグイン検出（cd 後のカレントディレクトリを基準）
+CHOLLOWS_PLUGIN_ARGS=()
+if [ -d ".chollows/skills" ] || [ -d ".chollows/agents" ]; then
+  CHOLLOWS_PLUGIN_ARGS=(--plugin-dir "$(pwd)/.chollows")
+fi
+
+# Chollows レビュー実行
+exec claude -p "/chollows-review $PR_NUMBER" \
+  --plugin-dir /chollows-plugin \
+  "${CHOLLOWS_PLUGIN_ARGS[@]}" \
   --permission-mode bypassPermissions \
   --output-format text \
   --max-budget-usd "$MAX_BUDGET_USD"

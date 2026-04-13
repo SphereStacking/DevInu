@@ -21,22 +21,16 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
 RUN npm install -g @anthropic-ai/claude-code
 
 # 非 root ユーザー作成（Claude Code が root での bypassPermissions を拒否するため）
-RUN useradd -m -s /bin/bash devinu
-RUN mkdir -p /devinu-plugin /workspace && chown -R devinu:devinu /devinu-plugin /workspace
+RUN useradd -m -s /bin/bash chollows
+RUN mkdir -p /chollows-plugin /workspace && chown -R chollows:chollows /chollows-plugin /workspace
 
 # plugin を固定パスに配置
-COPY --chown=devinu:devinu plugins/devinu/ /devinu-plugin/
-
-# pr-review-toolkit プラグインを公式リポジトリから取得
-RUN git clone --depth=1 https://github.com/anthropics/claude-plugins-official.git /tmp/claude-plugins-official \
-    && cp -r /tmp/claude-plugins-official/plugins/pr-review-toolkit /pr-review-toolkit-plugin \
-    && rm -rf /tmp/claude-plugins-official \
-    && chown -R devinu:devinu /pr-review-toolkit-plugin
+COPY --chown=chollows:chollows plugins/chollows/ /chollows-plugin/
 
 # entrypoint
-COPY --chown=devinu:devinu entrypoint.sh /entrypoint.sh
+COPY --chown=chollows:chollows entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-USER devinu
+USER chollows
 
 ENTRYPOINT ["/entrypoint.sh"]

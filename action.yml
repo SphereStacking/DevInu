@@ -1,26 +1,41 @@
-name: DevInu PR Review
-description: "デブでまるい犬キャラチームによる PR レビュー"
+name: Chollows PR Review
+description: "墓場に棲むお化け動物たちによる PR レビュー"
 author: SphereStacking
 
 inputs:
-  max_budget_usd:
-    description: "Claude Code 実行のコスト上限（USD）"
-    default: "5"
+  anthropic_api_key:
+    description: "Anthropic API キー"
+    required: true
   min_severity:
-    description: "レポートする最低 severity（critical/high/medium/low）"
+    description: "表示する最低 severity（critical/high/medium/low）"
     default: "medium"
-  enable_ci_analysis:
-    description: "CI 失敗ログ分析を有効化するか（ちくわ起動）"
-    default: "false"
+  max_budget_usd:
+    description: "API コスト上限（USD）"
+    default: "5"
+  language:
+    description: "レビュー言語"
+    default: "ja"
+  disabled_agents:
+    description: "無効化する agent ID（カンマ区切り）"
+    default: ""
   skip_labels:
-    description: "スキップするラベル（カンマ区切り）"
-    default: "skip-devinu"
+    description: "スキップ用ラベル（カンマ区切り）"
+    default: "skip-chollows"
+  review_instructions:
+    description: "追加レビュー指示（@chollows rereview の後のテキスト）"
+    default: ""
 
 runs:
   using: docker
-  image: docker://ghcr.io/spherestacking/devinu:latest
+  image: docker://ghcr.io/spherestacking/chollows:latest
   env:
+    GITHUB_TOKEN: ${{ github.token }}
+    GITHUB_REPOSITORY: ${{ github.repository }}
+    PR_NUMBER: ${{ github.event.pull_request.number }}
+    ANTHROPIC_API_KEY: ${{ inputs.anthropic_api_key }}
     MAX_BUDGET_USD: ${{ inputs.max_budget_usd }}
     MIN_SEVERITY: ${{ inputs.min_severity }}
-    ENABLE_CI_ANALYSIS: ${{ inputs.enable_ci_analysis }}
+    LANGUAGE: ${{ inputs.language }}
+    DISABLED_AGENTS: ${{ inputs.disabled_agents }}
     SKIP_LABELS: ${{ inputs.skip_labels }}
+    REVIEW_INSTRUCTIONS: ${{ inputs.review_instructions }}

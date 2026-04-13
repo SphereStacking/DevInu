@@ -21,7 +21,7 @@ jobs:
       - uses: docker/metadata-action@v5
         id: meta
         with:
-          images: ghcr.io/spherestacking/devinu
+          images: ghcr.io/spherestacking/chollows
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=latest

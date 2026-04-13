@@ -1,0 +1,16 @@
+{
+  "name": "chollows",
+  "version": "1.0.0",
+  "description": "Chollows - Ghost animals PR review team",
+  "skills": [
+    { "path": "skills/chollows-review/SKILL.md" }
+  ],
+  "agents": [
+    { "path": "agents/shokupan.md" },
+    { "path": "agents/damuo.md" },
+    { "path": "agents/wataame.md" },
+    { "path": "agents/omochi.md" },
+    { "path": "agents/togetoge.md" },
+    { "path": "agents/pancake.md" }
+  ]
+}
