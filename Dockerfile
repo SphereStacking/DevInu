@@ -31,6 +31,7 @@ COPY --chown=chollows:chollows plugins/chollows/ /chollows-plugin/
 COPY --chown=chollows:chollows entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-USER chollows
+# SD の setup ステップが root 権限を必要とするため、USER は設定しない。
+# entrypoint.sh 内で su chollows に切り替えて Claude Code を実行する。
 
 ENTRYPOINT ["/entrypoint.sh"]

@@ -56,12 +56,13 @@ jobs:
 
 | パラメータ | 必須 | デフォルト | 説明 |
 |-----------|------|-----------|------|
-| anthropic_api_key | ✅ | — | Anthropic API キー |
+| anthropic_api_key | ✅ | — | Anthropic API キー（Bedrock モード時は不要） |
 | min_severity | ❌ | medium | 表示する最低 severity（critical/high/medium/low） |
 | max_budget_usd | ❌ | 5 | API コスト上限（USD） |
 | language | ❌ | ja | レビュー言語 |
 | disabled_agents | ❌ | — | 無効化する agent ID（カンマ区切り: shokupan,damuo,wataame,omochi,togetoge,pancake） |
 | skip_labels | ❌ | skip-chollows | スキップ用ラベル（カンマ区切り） |
+| review_draft | ❌ | false | `true` で Draft PR でもレビュー実行 |
 
 ## Customization
 
@@ -92,8 +93,30 @@ jobs:
 
 | 方法 | 説明 |
 |------|------|
-| Draft PR | CI では自動スキップ |
+| Draft PR | CI では自動スキップ（`review_draft: true` で無効化可） |
 | ラベル | `skip-chollows` ラベルでスキップ |
+
+## GHE / ScrewDriver 対応
+
+GitHub Enterprise および ScrewDriver CI でも動作します。
+
+### GHE（GitHub Enterprise）
+
+`GITHUB_SERVER_URL` が `https://github.com` 以外の場合、自動的に GHE モードで動作します。`gh` CLI が GHE インスタンスを向くよう `GH_HOST` / `GH_ENTERPRISE_TOKEN` が設定されます。
+
+### ScrewDriver CI
+
+ScrewDriver 環境では `SCREWDRIVER=true` を検知し、SD 固有の環境変数（`SD_PULL_REQUEST`, `SCM_URL`, `SCM_ACCESS_TOKEN`, `SD_SOURCE_DIR`）を自動的に Chollows 形式にマッピングします。
+
+### GenAI Proxy（Bedrock）モード
+
+`CLAUDE_CODE_USE_BEDROCK=1` で Anthropic API の代わりに AWS Bedrock 経由で実行できます。
+
+| 環境変数 | 必須 | 説明 |
+|---------|------|------|
+| `AWS_SESSION_TOKEN` | ✅ | Bedrock 認証 |
+| `ANTHROPIC_BEDROCK_BASE_URL` | ✅ | プロキシ URL |
+| `ANTHROPIC_MODEL` | ❌ | デフォルト `us.anthropic.claude-sonnet-4-6` |
 
 ## ローカル利用
 

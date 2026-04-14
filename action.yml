@@ -24,6 +24,9 @@ inputs:
   review_instructions:
     description: "追加レビュー指示（@chollows rereview の後のテキスト）"
     default: ""
+  review_draft:
+    description: "Draft PR でもレビューを実行するか"
+    default: "false"
 
 runs:
   using: docker
@@ -39,3 +42,4 @@ runs:
     DISABLED_AGENTS: ${{ inputs.disabled_agents }}
     SKIP_LABELS: ${{ inputs.skip_labels }}
     REVIEW_INSTRUCTIONS: ${{ inputs.review_instructions }}
+    REVIEW_DRAFT: ${{ inputs.review_draft }}

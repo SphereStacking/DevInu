@@ -55,7 +55,7 @@ claude "/chollows-review <PR番号>"
 - agent の出力フォーマットは `severity / file / line / title / description / confidence / suggestion` の構造化形式を守る
 - Confidence スコア: 0-100 の整数。80 以上のみ報告対象
 - secrets を発見した場合、全文を引用しない（事実のみ報告）
-- CI とローカルの出力先分岐は `GITHUB_ACTIONS` 環境変数の有無で判定
+- CI とローカルの出力先分岐は `CHOLLOWS_CI` 環境変数の有無で判定（GHA / ScrewDriver 両対応）
 - `disabled_agents` で特定 agent を無効化可能（カンマ区切り ID）
 - Sticky コメントマーカー: `<!-- chollows-review-v1 -->`
 - `MAX_BUDGET_USD` のデフォルトは $5
