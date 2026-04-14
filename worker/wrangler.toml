@@ -1,0 +1,39 @@
+name = "chollows-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Durable Objects バインディング
+[[durable_objects.bindings]]
+name = "PR_REVIEW"
+class_name = "PRReviewDO"
+
+[[durable_objects.bindings]]
+name = "TOKEN_CACHE"
+class_name = "TokenCacheDO"
+
+# Durable Objects マイグレーション（クラス追加時に tag を更新すること）
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PRReviewDO", "TokenCacheDO"]
+
+# Container バインディング（Claude Code CLI 実行環境）
+[containers]
+[[containers.bindings]]
+name = "CONTAINER"
+class_name = "ChollowsContainer"
+
+# 環境変数（デフォルト値）
+# 変更する場合は wrangler.toml を編集してデプロイし直す
+[vars]
+MIN_SEVERITY = "medium"
+MAX_BUDGET_USD = "5"
+LANGUAGE = "ja"
+# GHE を使う場合は以下を設定する（デフォルトは https://github.com）
+# GITHUB_SERVER_URL = "https://github.example.com"
+
+# シークレットは以下のコマンドで設定する（wrangler.toml には記載しないこと）:
+#   wrangler secret put GITHUB_APP_ID
+#   wrangler secret put GITHUB_APP_PRIVATE_KEY
+#   wrangler secret put GITHUB_WEBHOOK_SECRET
+#   wrangler secret put ANTHROPIC_API_KEY
